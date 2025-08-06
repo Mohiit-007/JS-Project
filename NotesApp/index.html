@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .input-box{
+            width: 300px;
+            height: 200px;
+            background-color: antiquewhite;
+            border: 1px solid black;
+            padding: 1rem;
+        }
+        .delete{
+            cursor: pointer;
+        }
+        .note-wrapper{
+            background-color: beige;
+            border: 1px soild black;
+            padding: 10px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body style="display: flex;flex-direction: column;gap:8px;width: 10%;">
+    <div class="container" >
+    <h1>Notes</h1>
+    <button class="Btnclass"  style="padding: 6px" >Create Notes</button>
+    <br>
+    <br>
+    <div class="textareaclass"   >
+    <!-- <p contenteditable="true" class="input-box" <button class="delete" >delete</button> ></p> -->
+    </div>
+    <!--  -->
+    </div>
+
+    <script>
+        const Button = document.querySelector('.Btnclass')
+        const text = document.querySelector('.textareaclass')
+        let notes = document.querySelectorAll('.input-box')
+
+        function showstorage(){
+            text.innerHTML = localStorage.getItem("notes")
+        }
+        showstorage();
+
+        function updatestorage(){
+            localStorage.getItem(text.innerHTML)
+        }
+
+        Button.addEventListener('click',()=>{
+            let inputBox = document.createElement("p")
+            inputBox.className = "input-box"
+            inputBox.setAttribute('contentEditable','true')
+
+            let deleteBtn= document.createElement('button')
+            deleteBtn.className = "delete"
+            deleteBtn.innerText = "delete"
+
+            let notewrapper  = document.createElement('div')
+            // notewrapper.className = 'note-wrapper'
+            notewrapper.appendChild(inputBox)
+            notewrapper.appendChild(deleteBtn)
+
+            text.appendChild(notewrapper)
+
+            deleteBtn.addEventListener('click',(e)=>{
+            e.target.parentElement.remove();
+            updatestorage();
+            });
+        });
+
+    </script>
+</body>
+</html>

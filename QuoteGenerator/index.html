@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .quote-box{
+            width: 500px;
+            height: 500px;
+            background-color: antiquewhite;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex;width: full; height: full; justify-content: center;align-items: center;flex-direction: column;align-content: center; " >
+        <h1>Quote generator</h1>
+        <blockquote>"Loading..."</blockquote>
+        <span>Loading...</span>
+        <br>
+        <br>
+        <div>
+        <button style="cursor: pointer;">New Quote</button>
+        <button style="cursor: pointer;">Tweet</button>
+    </div>
+    </div>
+
+    <script>
+        const apiUrl = "https://api.quotable.io/random"
+
+        async function getquote(url) {
+            const response = await fetch(url);
+            var data = await response.json();
+            console.log(data);            
+        }
+        getquote(apiUrl);
+    </script>
+</body>
+</html>

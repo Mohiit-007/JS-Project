@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <h1>Age Calculator</h1>
+            <div class="inputbox" >
+                <input type="date" id="date" >
+                <button id="Btn" style="cursor: pointer;" >calculate</button>
+                <p class="result" ></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let inputBox = document.querySelector('.inputbox')
+        let userinput = document.querySelector('#date')
+        let Button = document.querySelector('#Btn')
+        let result = document.querySelector('.result')
+
+        Button.addEventListener('click',()=>{
+            let birthdate = new Date(userinput.value);
+
+            let d1 = birthdate.getDate();
+            let m1 = birthdate.getMonth() +1 ;
+            let y1 = birthdate.getFullYear();
+
+            let today = new Date();
+            let d2 = today.getDate();
+            let m2 = today.getMonth() +1 ;
+            let y2 = today.getFullYear();
+
+            let y3,m3,d3;
+
+            y3 = y2-y1;
+            if(m2>m1){
+                m3 = m2-m1;
+            }
+            else{
+                y3--;
+                m3 = 12 + m2 -m1;
+            }
+
+            if(d2>d1){
+                d3 = d2-d1;
+            }
+            else{
+                d3 = getdaysinMonth(year,month) + d2 - d1;
+            }
+            if(d3<0){
+                m3 = 11;
+                y3--;
+            }
+            
+            result.innerHTML =  ` you are <b>${y3}</b> years <b>${m3}</b> month <b>${d3}</b> days old. `
+        })
+
+         function getdaysinMonth(year,month){
+               return new Date(year,month,0).getDate();
+            }
+
+
+    </script>
+</body>
+</html>

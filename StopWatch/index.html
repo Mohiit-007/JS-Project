@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="display: flex;justify-content: center;align-items: center;width: 100vw;height: 100vh;overflow: hidden;" >
+    <div class="container"  style="display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 8px;">
+        <p class="show" style="font-size:40px; width: 50px; height: 50px;" ></p>
+        <div class="Buttonclass" style="display: grid;grid-template-columns: repeat(2,100px);gap: 1rem;">
+        <button id="startbtn" >start</button>
+        <button id="resetbtn">reset</button>
+        <button id="stopbtn" >Stop</button>
+        <button id="getbtn" >getTime</button>
+        <button id="clearbtn" >ClearTime</button>
+        </div>
+       
+        <div class="list-container" ></div>
+    </div>
+
+    <script>
+        let time = document.querySelector('.show')
+        let box = document.querySelector('.list-container')
+        let count = 0;
+
+        let intervalId ;
+
+        const start = ()=>{
+            intervalId =  setInterval(()=>{
+              time.innerHTML = count++;
+            } ,1000)
+        }
+        document.getElementById('startbtn').addEventListener("click",start)
+        document.getElementById('startbtn').removeEventListener("dbclick",start)
+
+        const stop = ()=>{
+                clearInterval(intervalId);  
+        }
+        document.getElementById('stopbtn').addEventListener("click",stop)
+
+        const reset = (id)=>{
+            count = "";
+             count= 0 ;
+             time.innerHTML = count;
+             clearInterval(intervalId);
+        }
+        document.getElementById('resetbtn').addEventListener("click",reset)
+
+        const get = ()=>{
+            let elm = document.createElement('p')
+            elm.innerHTML = `The Stop Time is <b> ${count-1} </b> `
+            box.appendChild(elm);
+        }
+
+        document.getElementById('getbtn').addEventListener("click",get)
+
+
+        const clear = ()=>{
+            box.innerHTML = "";
+        }
+        document.getElementById('clearbtn').addEventListener("click",clear)
+
+
+        
+    </script>
+
+</body>
+</html>

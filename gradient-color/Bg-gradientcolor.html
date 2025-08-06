@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gradient-color</title>
+    <style>
+        *{
+            padding: 0%;
+            margin: 0%;
+            box-sizing: border-box;
+        }
+        body{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* background-color: #051937 #008793 ; */
+            /* background-image:linear-gradient(160deg,#0093E9 0%,#80D0C7 100%); */
+            /* background-image : linear-gradient(to right,#1ba1d2,#10b768) */
+            background-image : linear-gradient(to right,#051937,#008793)
+        }
+        .container{
+            display: flex;
+            flex-direction: column;
+            gap:2.5rem;
+            justify-content: center;
+            align-items: center;
+            font-family:'Inter', sans-serif;
+            font-size: large;
+            color: aliceblue;
+        }
+        .BtnBox{
+            display: flex;
+            gap: 2rem;
+        }
+        #btn1{
+            padding:15px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            background-color: darkblue;
+            color: aliceblue;
+            outline: none;
+            border: none;
+            font-size: large;
+            box-shadow: 2px 3px 6px 1px black ;
+        }
+        #btn2{
+            padding:15px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            background-color: yellowgreen;
+            color: aliceblue;
+            font-size: large;
+            box-shadow: 2px 3px 6px 1px black ;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="BtnBox" >
+            <button id="btn1" >#051937</button>
+            <button id="btn2">#008793</button>
+        </div>
+        <p>Copy your code here</p>
+        <p class="paraclass">background-image : linear-gradient(to right,<b>#051937</b>,<b>#008793</b>)</p>
+    </div>
+
+    <script>
+        let Button1 = document.querySelector('#btn1')
+        let Button2 = document.querySelector('#btn2')
+        let Buttonbox = document.querySelector('.BtnBox')
+        let copycode = document.querySelector(".paraclass")
+        let rgb1 = "#051937";
+        let rgb2 = "#008793";
+
+        let handleclick1 = () =>{
+            rgb1 = hexvalues()
+            console.log(rgb1);
+            Button1.innerHTML = rgb1
+            copycode.innerHTML = `background-image : linear-gradient(to right,<b>${rgb1}</b>,<b>${rgb2}</b>)` 
+            document.body.style.backgroundImage = `linear-gradient(to right,${rgb1},${rgb2})`
+        }
+
+        let handleclick2 = () =>{
+            rgb2 = hexvalues()
+            console.log(rgb2);
+            Button2.innerHTML = rgb2
+             copycode.innerHTML = `background-image : linear-gradient(to right,<b>${rgb1}</b>,<b>${rgb2}</b>)`
+             document.body.style.backgroundImage = `linear-gradient(to right,${rgb1},${rgb2})`
+        }
+
+
+
+        let hexvalues = () =>{
+            let values = "0123456789abcdef"
+            let colors = "#";
+            for(let i=0;i<6;i++){
+             colors += values[Math.floor(Math.random()*16)]
+            }
+            return colors;
+        }
+        copycode.addEventListener('click',()=>{
+            navigator.clipboard.writeText(copycode.innerText)
+            copy.select()
+            copy.execommand()
+        })
+
+        Button1.addEventListener('click',handleclick1)
+        Button2.addEventListener('click',handleclick2)
+
+        
+
+
+
+    </script>
+</body>
+</html>

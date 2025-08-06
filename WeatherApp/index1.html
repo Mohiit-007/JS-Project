@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <section class="container" >
+        <div class="weather-header" >
+            <form class="weather-search" >
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text"spellcheck="false" class="city-name"  placeholder="enter city name..." >
+            </form>
+        </div>
+        <div class="weather-body">
+            <h1 class="Weather-city"></h1>
+            <p class="weather-data-time"></p>
+            <div class="weather-data" >
+                <p class="wether-forecast" ></p>
+                <div class="weather-icon" ></div>
+            </div>
+            <p class="wehter-temp" ></p>
+            <div class="wether-minmax" >
+                <p class="weather-min" ></p>
+                <p class="weather-max" ></p>
+            </div>
+        </div>
+        <div class="weather-info" >
+            <div class="weather-card">
+                <div>
+                    <p></p>
+                    <p class="weather-feels-like" >12&#176</p>
+                </div>
+            </div>
+            <div class="weather-card">
+                <div>
+                    <p></p>
+                    <p class="weather-humidity" >12&#176</p>
+                </div>
+            </div>
+            <div class="weather-card">
+                <div>
+                    <p></p>
+                    <p class="weather-wind" >12&#176</p>
+                </div>
+            </div>
+            <div class="weather-card">
+                <div>
+                    <p></p>
+                    <p class="weather-pressure" >12&#176</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let conatinerbox = document.querySelector('.container')
+        let cityname = document.querySelector('.Weather-city')
+        let datetime = document.querySelector('.weather-data-time')
+        let forecast = document.querySelector('.wether-forecast')
+        let icon = document.querySelector('.weather-icon')
+        let temp = document.querySelector('.wehter-temp')
+        let min = document.querySelector('.weather-min')
+        let max= document.querySelector('.weather-max') 
+        let cityserach = document.querySelector('.weather-search')
+
+        let weatherfeel = document.querySelector('.weather-feels-like')
+        let humidity  = document.querySelector('.weather-humidity')
+        let Wind = document.querySelector('.weather-wind')
+        let pressure  =document.querySelector('.weather-pressure')        
+        let weathercity = document.querySelector('.city-name')
+        let city = "pune";
+
+        const getcountryname  = (code) =>{
+            return new Intl.DisplayNames([code],{type:"region"}).of(code);  
+        }
+        const getDatetime = (dt)=>{
+            let currdate = new Date(dt*1000)
+            console.log(currdate)
+
+            const options = {
+                weekday : "long",
+                year : "numeric",
+                month: "long",
+                day : "numeric",
+                hour : "numeric",
+                minute : "numeric", 
+            }
+            const formatter  = new Intl.DateTimeFormat("en-US",options);
+            console.log(formatter)  
+            return formatter.format(currdate)
+        }
+        cityserach.addEventListener('submit',(e)=>{
+            e.preventDefault();
+            console.log(weathercity.value)
+            city = weathercity.value;
+            getweatherdata();
+            weathercity.value = ""
+        })
+        const getweatherdata = async (e) => {
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=247eb36021eb659cc16d761746a5058f`
+            
+            
+                try {
+                    const response = await fetch(url)
+                    const data = await response.json()
+                    console.log(data)
+                    const {main ,name,weather,wind,sys,dt} = data;
+                    forecast.innerHTML = `${weather[0].main}`
+                    cityname.innerHTML = `${name},${getcountryname(sys.country)}`
+                    datetime.innerHTML = getDatetime(dt);
+                    temp.innerHTML = `Temp: ${main.temp}&#176`
+                    min.innerHTML  =  `Min: ${main.temp_min.toFixed()}&#176`
+                    max.innerHTML  =  `Max: ${main.temp_max.toFixed()}&#176`
+                    weatherfeel.innerHTML = `feels-like: ${main.feels_like.toFixed(2)}&#176`
+                    pressure.innerHTML = `pressure: ${main.pressure}hPa`  
+                    humidity.innerHTML =   `humidity: ${main.humidity}&#176` 
+                    Wind.innerHTML = `wind: ${wind.speed}m/s `
+
+                 } 
+                    catch (error) {
+                    console.log("Please enter correct city name")
+                }        
+        }
+        document.body.addEventListener('load',getweatherdata())
+
+    </script>
+</body>
+</html>

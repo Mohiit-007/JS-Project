@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do list</title>
+    
+    <style>
+        *{
+            margin: 0;
+            padding:0;
+            box-sizing: border-box;
+            font-family:'Inter', sans-serif ;
+        }
+        body{
+            height: 100vh;
+            width: 100vw;
+            background:linear-gradient(135deg,#153677,#4e085f);
+            padding: 10px;
+        }
+        .container{
+            width: 100%;
+            min-height: 10ovh;
+        }
+        .header{
+            width: 100%;
+            max-width: 480px;
+            margin: 100px auto 20px;
+            padding: 40px 30px 70px;
+            background-color: white;
+            border-radius:10px ;
+            display: flex;
+            flex-direction: column;
+            gap:30px;
+        }
+        .header h2{
+            color: #002765;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .header img{
+            width: 30px;
+            height: 30px;
+        }
+        .list{
+            display: flex;
+            /* justify-content: space-between; */
+            background: #edeef0;
+            align-items: center;
+            border-radius: 30px;
+            padding-left: 30px; 
+            gap:110px;
+        }
+        .list input{
+            outline: none;
+            border: none;
+            background:transparent;
+        }
+        .list button{
+            outline: none;
+            border: none;
+            background: #ff5945;
+            color: white;
+            padding: 16px 45px;
+            border-radius: 30px;
+            font-size: 15px;
+            line-height: 1rem;
+            cursor: pointer;
+        }
+        ul li{
+            list-style: none;
+            font-size: 17px;
+            padding: 12px 8px 12px 50px;
+            user-select: none;
+            cursor: pointer;
+            position: relative;
+        }
+        ul li::before{
+            content:"";
+            position: absolute;
+            border-radius: 50%;
+            height: 25px;
+            width: 25px;
+            background-image: url(./images/unchecked.png);
+            background-size: cover;
+            background-position: center;
+            left: 0;
+        }
+        ul li.checked{
+            color: #555;
+            text-decoration: line-through;
+        }
+        ul li.checked::before{
+            background-image: url(./images/checked.png);
+        }
+        ul span{
+            position: relative;
+            right: 0;
+            top:0;
+            width:40px;
+            height: 40px;
+            font-size:22px;
+            color: #555;
+            line-height: 40px;
+            text-align: center;
+        }
+        ul li span:hover{
+            background: #edeef0;
+            border-radius: 50%;
+        }
+        .todolist{
+            display: flex;
+            justify-content: space-between;
+            max-width: 480px;
+            padding: 0px 10px;
+        }
+        .del{
+            outline: none;
+            border: none;
+            background: #002765;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 15px;
+            line-height: 1rem;
+            cursor: pointer;
+        }
+        .del:hover{
+            background-color: #002765ef;
+        }
+        .list_container{
+            display: flex;
+            flex-direction: column;
+            gap:10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+        <div>
+            <h2>To-Do List <img src="./images/icon.png" alt=""></h2>
+        </div>
+        <div class="list">
+            <input type="text" class="input-box" spellcheck="false"  placeholder="Add your task">
+            <button onclick="addTask()">Add</button>
+        </div>
+        <div class="list_container">
+            <!-- <li></li> <button>delete</button> -->
+        </div>
+
+    </div>
+
+    <script>
+        const InputBox = document.querySelector('.input-box')
+        const listbox = document.querySelector(".list_container")
+        const remove = document.querySelector('.del')
+
+        
+
+        function gettodolist(){
+           return JSON.parse(localStorage.getItem("todolist"))
+        }
+
+        const updatedtodolist = (todolist) =>{
+         return  localStorage.setItem("todolist",JSON.stringify(todolist))
+        }
+
+        let todolist = gettodolist() || [];
+
+        const getelement = (num)=>{
+                let divelement = document.createElement("div")
+                divelement.classList.add("todolist")
+                divelement.innerHTML = `  <li>${num}</li> <button class="del" >delete</button>`
+                listbox.appendChild(divelement)
+                InputBox.value = "";
+                
+        }
+
+        function addTask(e){
+            if(InputBox.value === ""){
+                alert("you must write something here")
+            }
+            else{                
+                let localdata = InputBox.value.trim();
+                todolist.push(localdata)
+                todolist = [...new Set(todolist)]  
+                
+                console.log(todolist)
+                localStorage.setItem("todolist",JSON.stringify(todolist))
+
+
+                let divelement = document.createElement("div")
+                divelement.classList.add("todolist")
+                divelement.innerHTML = `  <li>${InputBox.value}</li> <button class="del" >delete</button>`
+                listbox.appendChild(divelement)
+                InputBox.value = "";
+
+            }
+            }
+
+            function showdata(){
+            console.log(todolist);
+            todolist.forEach((data) => {
+                getelement(data);
+            });
+        }
+
+        showdata();
+
+                 const removetodoelement = (e)=>{
+                        todoelement = e.target;
+                        const todoelementremove = todoelement.previousElementSibling.innerText;
+                        const parentElm = todoelement.parentElement;
+                        console.log(todoelementremove)
+                        parentElm.remove();
+
+                         todolist =  todolist.filter((num) => {
+                            // console.log(num);
+                             return  num !== todoelementremove;
+                        })
+                        console.log(todolist)
+                        updatedtodolist(todolist);
+                    }
+                   
+
+                 listbox.addEventListener('click',(e) =>{
+                    e.preventDefault();
+                  removetodoelement(e);
+                } )
+
+                
+    </script>
+
+</body>
+</html>

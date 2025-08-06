@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+            box-sizing: border-box;
+        }
+        body{
+            height:100vh;
+            width: 100vw;
+            display:flex ;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color:aliceblue;
+        }
+        .container{
+            display: flex;
+            gap:2rem;
+            flex-direction: column;
+            font-family:'Inter', sans-serif;
+            padding: 2rem;
+            border: 2px solid black;
+            border-radius: 5px;
+            background-color: grey;
+        }
+        form{
+            display: flex;
+            flex-direction: column;
+            gap:20px;
+        }
+        #Height{
+            padding:6px;
+            border: 1px solid black;
+            border-radius: 3px;
+            outline: none;
+        }
+        #Weight{
+            padding:6px;
+            border: 1px solid black;
+            border-radius: 3px;
+            outline: none;
+        }
+        #submit{
+            text-align: center;
+            margin-left: 70px;
+            width:80px;
+            padding:8px;
+            border: 1px solid black;
+            border-radius: 6px;
+            font-weight: bold;
+        } 
+        .parentclass{
+            height: 30px;
+            border: 1px solid black;
+            padding:1px; 
+            border-radius: 4px; 
+            text-align: center;
+            margin-left: 10px;
+            width:200px;
+            background-color: aliceblue; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem; 
+        }
+        #submit:hover{
+            background-color: gainsboro;
+        }
+        .bottomclass{
+            display: flex;
+            flex-direction: column;
+            gap:13px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BMI Calculator</h1>
+
+        <form>
+
+        <input type="text" placeholder="height(cm)" id="Height">
+        <input type="text" placeholder="weight(kg)" id="Weight">
+
+        <button id="submit">Calculate</button>
+
+        <div class="parentclass">
+             <span id="results">Result</span>
+            </div>
+
+
+        <div class="bottomclass">
+        <h2>BMI Weight Guide</h2>
+        <p> Under Weight = Less than 18.6</p>
+        <p>Noraml = 18.6 and 24.9</p>
+        <p>Overweight = Greater than 24.9</p>
+        </div>
+
+        </form>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
