@@ -30,11 +30,6 @@
 
         function passwordbox(){
             let password ="";
-            password += uppercase[Math.floor(Math.random()*uppercase.length )];
-            password += lowercase[Math.floor(Math.random()*lowercase.length )];
-            password += symbol[Math.floor(Math.random()*symbol.length )];
-            password += number[Math.floor(Math.random()*number.length )];
-
             while(length>password.length){
             password += allchars[Math.floor(Math.random()*allchars.length )];
             }
@@ -43,7 +38,7 @@
         function copypassword(){
             inputbox.select();
             document.execCommand('copy');
-            }
+        }
 
     </script>
 
