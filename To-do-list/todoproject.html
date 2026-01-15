@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+    }  
+
+    body{
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container{
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 12px;
+        width: 350px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    h1{
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+
+    span{
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.2rem;
+    }
+
+    #inputtext{
+        flex: 1;
+        padding: 0.6rem 0.8rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+    #inputtext:focus{
+        border-color: #667eea;
+    }
+
+    .Btn{
+        padding: 0.6rem 1rem;
+        border: none;
+        border-radius: 6px;
+        background: #667eea;
+        color: white;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .Btn:hover{
+        background: #5563d6;
+    }
+
+    .listclass{
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    /* Todo item */
+    .mainclass{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f4f6ff;
+        padding: 0.6rem 0.8rem;
+        border-radius: 6px;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .mainclass li{
+        list-style: none;
+        color: #333;
+        word-break: break-word;
+    }
+
+    /* Delete button */
+    .deleteclass{
+        background: #ff4d4d;
+        border: none;
+        color: white;
+        padding: 0.35rem 0.7rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    .deleteclass:hover{
+        background: #e60000;
+        transform: scale(1.05);
+    }
+
+    /* Animation */
+    @keyframes fadeIn{
+        from{
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+        to{
+            opacity: 1;
+            transform: translateY(0);
+        }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Todo Project</h1>
+        <span>
+            <input type="text" id="inputtext" placeholder="enter here... ">
+            <button class="Btn" >Add</button>
+        </span>
+        <ul class="listclass" >
+        </ul>
+    </div>
+
+    <script>
+        let Btn = document.querySelector(".Btn");
+        let inputclass = document.querySelector("#inputtext");
+        let list = document.querySelector(".listclass");
+
+        let todolist = [];
+
+        let getdata = ()=>{
+            return JSON.parse(localStorage.getItem("TodoData"));
+        }
+
+        const adddatatopage = (value)=>{
+            let div = document.createElement('div');
+            div.className = "mainclass";
+            div.innerHTML = `<li>${value}</li>   <button class="deleteclass" >delete</button>`;
+            list.append(div);
+            inputclass.value = "";
+        }
+        
+        const getDatafromlocalStorage = ()=>{
+            let todolistdata = getdata() || [];
+            todolistdata.forEach((value) => {
+                adddatatopage(value);
+            });
+        }
+
+        getDatafromlocalStorage();
+        let Addtodo = (e)=>{
+            e.preventDefault();
+            let data = inputclass.value.trim();
+            todolist = getdata() || [];
+            if(data === ""){
+                alert("write something here");
+                return ;
+            }
+            if(todolist.includes(data)){
+                alert("Already exist...");
+                inputclass.value = "";
+                return ;
+            }
+            todolist.push(data);
+            localStorage.setItem("TodoData",JSON.stringify(todolist));
+            adddatatopage(data);
+        }
+        
+
+        const removedataformlocalstroage = (e)=>{
+            let localstroagedata = getdata() || [];
+            if(e.target.classList.contains("deleteclass")){
+                let removeEle = e.target.previousElementSibling.innerText;
+                localstroagedata = localstroagedata.filter((value)=>{
+                    return value != removeEle;
+                })
+                let parentclass = e.target.parentElement;
+                if(parentclass.classList.contains("mainclass")){
+                    parentclass.remove();
+                }
+            }
+            let arr = [];
+            localstroagedata.forEach((value)=>{
+                arr.push(value);
+            })
+            localStorage.setItem("TodoData",JSON.stringify(arr));
+            console.log(arr);
+        }
+        
+
+        list.addEventListener('click',(e)=>{
+            e.preventDefault();
+            removedataformlocalstroage(e);
+        })
+        Btn.addEventListener('click',(e)=>{
+            Addtodo(e);
+        })
+        </script>
+</body>
+</html>

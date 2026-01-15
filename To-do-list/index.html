@@ -164,6 +164,7 @@
            return JSON.parse(localStorage.getItem("todolist"))
         }
 
+
         const updatedtodolist = (todolist) =>{
          return  localStorage.setItem("todolist",JSON.stringify(todolist))
         }
@@ -197,10 +198,10 @@
                 divelement.innerHTML = `  <li>${InputBox.value}</li> <button class="del" >delete</button>`
                 listbox.appendChild(divelement)
                 InputBox.value = "";
-
             }
             }
 
+            
             function showdata(){
             console.log(todolist);
             todolist.forEach((data) => {
