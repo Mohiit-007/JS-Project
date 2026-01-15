@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+        background: #f4f6f8;
+        padding: 20px;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .header h1 {
+        color: #333;
+    }
+
+    .balance {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .balance h2 {
+        font-size: 1.4rem;
+    }
+
+    .balance-amount {
+        font-weight: normal;
+    }
+
+    .main {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .input {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .input input,
+    .input select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .input input:focus,
+    .input select:focus {
+        outline: none;
+        border-color: #4f46e5;
+    }
+
+    #Btn {
+        background: #4f46e5;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    #Btn:hover {
+        background: #4338ca;
+    }
+
+    .table {
+        margin-top: 10px;
+    }
+
+    .rowheader {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        background: #fff;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table > .rowheader:first-child {
+        background: #e5e7eb;
+        font-weight: bold;
+    }
+
+    .rowheader p {
+        padding: 10px;
+        text-align: center;
+        border-right: 1px solid #ddd;
+    }
+
+    .rowheader p:last-child {
+       border-right: none;
+    }
+
+    .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .button button {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .button button:first-child {
+        background: #16a34a;
+        color: #fff;
+    }
+
+    .button button:first-child:hover {
+        background: #15803d;
+    }
+
+    .button button:last-child {
+        background: #dc2626;
+        color: #fff;
+    }
+
+    .button button:last-child:hover {
+        background: #b91c1c;
+    }
+
+    .income {
+        color: green;
+        font-weight: bold;
+    }
+
+    .expense {
+        color: red;
+        font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+    .input {
+        grid-template-columns: 1fr;
+    }
+
+    .rowheader {
+        grid-template-columns: 1fr 1fr;
+        grid-row-gap: 5px;
+    }
+
+    .rowheader p {
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .rowheader p:last-child {
+        border-bottom: none;
+    }
+}
+
+</style>
+</head>
+<body>
+    <div class="header">
+        <h1>Expense Tracker</h1>
+    </div>
+    <div class="balance">
+        <h2><b>Total balance : </b>0</h2>
+    </div>
+    <div class="main">
+        <div class="input" >
+            <input type="text" id="name"  placeholder="Expense name">
+            <input type="number" id="amount" placeholder="Amount">
+            <select class="type" >
+                <option value="" disabled selected hidden>Type</option>
+                <option value="Income">Income</option>
+                <option value="Expense">Expense</option>
+            </select>
+            <input type="date" id="date">
+            <button id="Btn" >Add</button>
+        </div>
+        <br>
+        <div class="table">
+        <div class="rowheader">
+            <p class="paraname">Name</p>
+            <p class="paraamount">Amount</p>
+            <p class="paratype">Type</p>
+            <p class="paradate">Date</p>
+            <p class="paraaction">Action</p>
+        </div>
+        
+      </div>
+    </div>
+
+    <script>
+        let nameid = document.querySelector("#name");
+        let amountid = document.querySelector("#amount");
+        let typeid = document.querySelector(".type");
+        let dateid = document.querySelector("#date");
+        let AddBtn = document.querySelector("#Btn");
+        let table = document.querySelector(".table");
+        let paraname = document.querySelector(".paraname");
+        let paraamount = document.querySelector(".paraamount");
+        let paratype = document.querySelector(".paratype");
+        let paradate = document.querySelector(".paradate");
+        let balance = document.querySelector(".balance");
+        let action = document.querySelector("paraaction");
+        
+        
+        const toISODate = (displayDate)=>{
+            const [month, day, year] = displayDate.split("/");
+            return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+        }
+      
+        
+        const getdata = ()=>{
+            let data = localStorage.getItem("transcations");
+            return data ? JSON.parse(data) : [];
+        }
+        let transcations = getdata();
+        let num = 0;
+            
+        
+        const getsum = ()=>{
+            let totalAmt = 0;
+            for(obj of transcations){
+                if(obj.type == "Income"){
+                    totalAmt += Number(obj.amount);
+                }
+                else{
+                    totalAmt -= Number(obj.amount);
+                }
+            }
+            return totalAmt;
+        }
+        console.log("getsum",getsum());
+        
+       
+        const getnamesdata = ()=>{
+            let data = localStorage.getItem("names");
+            return data ? JSON.parse(data) : [];
+        }
+        let names = getnamesdata();
+        const adddatafromlocalstroage = (arr)=>{
+            const {id,name,amount,type,date} = arr;
+
+            let div = document.createElement('div');
+            div.classList.add("rowheader");
+            div.dataset.id = id;
+
+            let p1 = document.createElement('p');
+            let p2 = document.createElement('p');
+            let p3 = document.createElement('p');
+            let p4 = document.createElement('p');
+            let p5 = document.createElement('div');
+
+            p1.classList.add("namevalue");
+            p2.classList.add('amountvalue');
+            p3.classList.add("typevalue");
+            p4.classList.add("datevalue");
+            p5.classList.add("button");
+
+            p1.innerText = name;
+            p2.innerText = `$${amount}`;
+            p3.innerText = type;
+            p4.innerText = new Date(date).toLocaleDateString("en-GB");
+            let editbtn = document.createElement('button');
+            let deletebtn = document.createElement('button');
+            editbtn.innerText = `edit`;
+            deletebtn.innerText = `delete`;
+            p5.append(editbtn,deletebtn);
+
+            const currentBalance = getsum();
+            balance.innerHTML =`<h2><strong>Total balance :</strong> $${currentBalance}</h2>`;
+
+            div.append(p1,p2,p3,p4,p5);
+            table.append(div);
+
+            deletebtn.addEventListener('click',(e)=>{
+                let row = e.target.parentElement.parentElement;
+                row.remove();
+        
+                transcations = transcations.filter(
+                    t => t.id !== id
+                )
+                let namevalue = row.querySelector(".namevalue").innerText;
+                names = names.filter((value)=>{
+                    return value !== namevalue;
+                });
+                localStorage.setItem("transcations", JSON.stringify(transcations));
+                localStorage.setItem("names", JSON.stringify(names));
+                balance.innerHTML = `<b>Total balance : </b> $${getsum()}`;
+            })
+            
+            editbtn.addEventListener("click", (e) => {
+                let parent = e.target.parentElement.parentElement;
+                let person = parent.querySelector(".namevalue");
+                let amountEl = parent.querySelector(".amountvalue");
+                let amounttype = parent.querySelector(".typevalue");
+                let datevalue = parent.querySelector(".datevalue");
+
+                let s = amountEl.innerText.slice(1);
+                nameid.value = person.innerText ;
+                amountid.value = Number(s) ;
+                typeid.value = amounttype.innerText ;
+                date.value = date;
+                parent.remove();
+                transcations = transcations.filter(
+                    t => t.id !== id
+                )
+                console.log(person);
+                names = names.filter((value)=>{
+                    return value !== person.innerText;
+                });
+                localStorage.setItem("transcations", JSON.stringify(transcations));
+                localStorage.setItem("names", JSON.stringify(names));
+                balance.innerHTML = `<b>Total balance : </b> $${currentBalance}`;
+            });
+        }
+        
+        
+        const localdata = ()=>{
+            table.innerHTML = "";
+            let p1 = document.createElement('p');
+            let p2 = document.createElement('p');
+            let p3 = document.createElement('p');
+            let p4 = document.createElement('p');
+            let p5 = document.createElement('p');
+            p1.innerHTML = `<b>Name</b>`;
+            p2.innerHTML = `<b>Amount</b>`;
+            p3.innerHTML = `<b>Type</b>`;
+            p4.innerHTML = `<b>Date</b>`;
+            p5.innerHTML = `<b>Action</b>`;
+
+            let div = document.createElement('div');
+            div.append(p1,p2,p3,p4,p5);
+            div.classList.add("rowheader");
+            table.append(div);
+            
+            transcations.forEach(val => adddatafromlocalstroage(val));
+        }
+
+        localdata();
+        
+        const add = (e)=>{
+            e.preventDefault();
+
+            const amountVal = Number(amountid.value);
+            const currentBalance = getsum();
+
+            if (typeid.value === "Expense" && amountVal > currentBalance) {
+                alert("Insufficient balance");
+                nameid.value = "";
+                amountid.value = "";
+                typeid.value = "";
+                dateid.value = "";
+                return;
+            }
+            let data = nameid.value;
+            if(names.includes(data)){
+                alert('Already present...');
+                nameid.value = "";
+                amountid.value = "";
+                typeid.value = "";
+                dateid.value = "";
+                return ;
+            }
+            if(nameid.value === "" || amountid.value === "" || typeid.value === "" || dateid.value === ""){
+                alert("Oops! Please complete all fields to continue 😊");
+                return ;
+            }
+            names.push(data);
+            localStorage.setItem("names",JSON.stringify(names));
+            const transaction = {
+                id: Date.now(),
+                name: nameid.value,
+                amount: Number(amountid.value),
+                type: typeid.value,
+                date: dateid.value, 
+            };
+            transcations.push(transaction);
+            localStorage.setItem("transcations", JSON.stringify(transcations));
+            localdata();
+
+            nameid.value = "";
+            amountid.value = "";
+            typeid.value = "";
+            dateid.value = "";
+        }
+
+        AddBtn.addEventListener("click",(e)=>{
+            e.preventDefault();
+            add(e);
+        })
+
+    </script>
+</body>
+</html>
